@@ -21,6 +21,7 @@ BuildRoot: %{_tmppath}/%{name}-buildroot
 
 BuildRequires: zlib-devel
 BuildRequires: bzip2-devel
+BuildRequires: libltdl-devel
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
