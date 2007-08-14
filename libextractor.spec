@@ -1,5 +1,5 @@
 %define	name	libextractor
-%define	version	0.5.18
+%define	version	0.5.18a
 %define	release	%mkrel 1
 
 %define realname extractor
@@ -16,7 +16,7 @@ Release: %{release}
 License: BSD
 Group: System/Libraries
 URL: http://www.gnunet.org/libextractor/
-Source: http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.bz2
+Source: http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot
 
 BuildRequires: zlib-devel
@@ -92,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.so.*
 %_mandir/man1/*
 %_mandir/man3/*
+%_infodir/extractor.info.*
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
