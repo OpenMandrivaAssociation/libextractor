@@ -1,6 +1,6 @@
 %define	name	libextractor
 %define	version	0.5.18a
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 %define realname extractor
 
@@ -89,15 +89,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{libname} -f %name.lang
 %defattr(-,root,root)
-%{_libdir}/*.so.*
+%{_libdir}/%{name}.so.%{major}*
 %_mandir/man1/*
 %_mandir/man3/*
 %_infodir/extractor.info.*
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
-%{_libdir}/*.so
-%{_libdir}/*.*a
+%{_libdir}/%{name}.so
+%{_libdir}/%{name}.*a
 %{_libdir}/%name/*.so
 %{_libdir}/%name/*.*a
 %{_includedir}/*
