@@ -17,7 +17,6 @@ License: BSD
 Group: System/Libraries
 URL: http://www.gnunet.org/libextractor/
 Source: http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-buildroot
 
 BuildRequires: zlib-devel
 BuildRequires: bzip2-devel
