@@ -1,13 +1,12 @@
 %define	name	libextractor
 %define	version	0.5.19a
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 %define realname extractor
 
 %define major 1
 %define libname %mklibname %{realname} %major
-%define libnamedev %mklibname %{realname} %major -d
-
+%define libnamedev %mklibname %{realname} -d
 
 Summary: Libextractor library used to extract meta-data from files
 Name: %{name}
@@ -18,7 +17,8 @@ Group: System/Libraries
 URL: http://www.gnunet.org/libextractor/
 Source: http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-buildroot
-
+Conflicts: %{mklibname extractor 1} < 0.5.19a-2
+Requires: %libname = %version-%release
 BuildRequires: zlib-devel
 BuildRequires: bzip2-devel
 BuildRequires: libltdl-devel
@@ -38,7 +38,8 @@ various additional MIME types are detected.
 %package -n %{libname}
 Summary: Libextractor library used to extract meta-data from files 
 Group: Development/Other
-Provides: lib%{name} = %{version}
+Conflicts: %{mklibname -d extractor 1} < 0.5.19a-2
+Requires: %name = %version-%release
 
 %description -n %{libname}
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -55,53 +56,54 @@ various additional MIME types are detected.
 %package -n %{libnamedev}
 Summary: Libextractor library headers and development libraries
 Group: Development/Other
-Requires: %{libname} = %{version}
-Provides: lib%{name}-devel = %{version}
-Provides: libextractor-devel
+Requires: %{libname} = %{version}-%{release}
+Provides: libextractor-devel = %version-%release
+Obsoletes: %mklibname -d extractor 1
 
 %description -n %{libnamedev}
 libextractor devel files
 
-
 %prep
 rm -rf $RPM_BUILD_ROOT
-
 %setup -q 
 
 %build
-  
-./configure --prefix=%_prefix --mandir=%_mandir --datadir=%_datadir --libdir=%_libdir
-
+%configure2_5x
 make
 
 %install
-
-%makeinstall
-
+rm -rf $RPM_BUILD_ROOT
+%makeinstall_std
 %find_lang %name
 
 %post -n %{libname} -p /sbin/ldconfig
 
+%post
+%_install_info extractor
+
 %postun -n %{libname} -p /sbin/ldconfig
+
+%preun
+%_remove_install_info extractor
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -n %{libname} -f %name.lang
+%files -f %name.lang
 %defattr(-,root,root)
-%{_libdir}/%{name}.so.%{major}*
+%_bindir/*
 %_mandir/man1/*
 %_mandir/man3/*
 %_infodir/extractor.info.*
 
+%files -n %{libname}
+%defattr(-,root,root)
+%{_libdir}/%{name}.so.%{major}*
+%{_libdir}/%name
+
 %files -n %{libnamedev}
 %defattr(-,root,root)
 %{_libdir}/%{name}.so
-%{_libdir}/%{name}.*a
-%{_libdir}/%name/*.so
-%{_libdir}/%name/*.*a
+%{_libdir}/%{name}.la
 %{_includedir}/*
-%{_bindir}/*
 %{_libdir}/pkgconfig/*
-
-
