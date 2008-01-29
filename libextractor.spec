@@ -1,6 +1,6 @@
 %define	name	libextractor
-%define	version	0.5.18a
-%define	release	%mkrel 3
+%define	version	0.5.19a
+%define	release	%mkrel 1
 
 %define realname extractor
 
