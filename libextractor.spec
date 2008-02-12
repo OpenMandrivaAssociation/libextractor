@@ -30,8 +30,8 @@ and to be trivially extendable by linking against external extractors for
 additional file types. The goal is to provide developers of file-sharing 
 networks or WWW-indexing bots with a universal library to obtain simple 
 keywords to match against queries. libextractor contains a shell-command 
-"extract" that, similar to the well-known "file" command, can extract meta-data 
-from a file and print the results to stdout. Currently, it supports the formats 
+"extract" that, similar to the well-known "file" command, can extract meta-data
+from a file and print the results to stdout. Currently, it supports the formats
 HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also, 
 various additional MIME types are detected.
 
@@ -48,8 +48,8 @@ and to be trivially extendable by linking against external extractors for
 additional file types. The goal is to provide developers of file-sharing 
 networks or WWW-indexing bots with a universal library to obtain simple 
 keywords to match against queries. libextractor contains a shell-command 
-"extract" that, similar to the well-known "file" command, can extract meta-data 
-from a file and print the results to stdout. Currently, it supports the formats 
+"extract" that, similar to the well-known "file" command, can extract meta-data
+from a file and print the results to stdout. Currently, it supports the formats
 HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also, 
 various additional MIME types are detected.
 
