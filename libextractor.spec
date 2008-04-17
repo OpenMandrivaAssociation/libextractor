@@ -1,27 +1,29 @@
-%define	name	libextractor
-%define	version	0.5.19a
-%define	release	%mkrel 2
-
 %define realname extractor
 
 %define major 1
-%define libname %mklibname %{realname} %major
+%define libname %mklibname %{realname} %{major}
 %define libnamedev %mklibname %{realname} -d
 
-Summary: Libextractor library used to extract meta-data from files
-Name: %{name}
-Version: %{version}
-Release: %{release}
-License: BSD
-Group: System/Libraries
-URL: http://www.gnunet.org/libextractor/
-Source: http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-buildroot
-Conflicts: %{mklibname extractor 1} < 0.5.19a-2
-Requires: %libname = %version-%release
-BuildRequires: zlib-devel
-BuildRequires: bzip2-devel
-BuildRequires: libltdl-devel
+Summary:	Libextractor library used to extract meta-data from files
+Name:		libextractor
+Version:	0.5.20a
+Release:	%mkrel 1
+License:	BSD
+Group:		System/Libraries
+URL:		http://www.gnunet.org/libextractor/
+Source:		http://www.gnunet.org/libextractor/download/%{name}-%{version}.tar.bz2
+Conflicts:	%{mklibname extractor 1} < 0.5.19a-2
+Requires:	%{libname} = %{version}-%{release}
+BuildRequires:	zlib-devel
+BuildRequires:	bzip2-devel
+BuildRequires:	libltdl-devel
+BuildRequires:	libvorbis-devel
+BuildRequires:	libmpeg2dec-devel
+BuildRequires:	libflac-devel
+BuildRequires:	glib-devel
+BuildRequires:	gtk+2-devel
+BuildRequires:	libgsf-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -36,10 +38,10 @@ HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also,
 various additional MIME types are detected.
 
 %package -n %{libname}
-Summary: Libextractor library used to extract meta-data from files 
-Group: Development/Other
-Conflicts: %{mklibname -d extractor 1} < 0.5.19a-2
-Requires: %name = %version-%release
+Summary:	Libextractor library used to extract meta-data from files 
+Group:		Development/Other
+Conflicts:	%{mklibname -d extractor 1} < 0.5.19a-2
+Requires:	%{name} = %{version}-%{release}
 
 %description -n %{libname}
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -54,27 +56,28 @@ HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also,
 various additional MIME types are detected.
 
 %package -n %{libnamedev}
-Summary: Libextractor library headers and development libraries
-Group: Development/Other
-Requires: %{libname} = %{version}-%{release}
-Provides: libextractor-devel = %version-%release
-Obsoletes: %mklibname -d extractor 1
+Summary:	Libextractor library headers and development libraries
+Group:		Development/Other
+Requires:	%{libname} = %{version}-%{release}
+Provides:	libextractor-devel = %{version}-%{release}
+Obsoletes:	%mklibname -d extractor 1
 
 %description -n %{libnamedev}
-libextractor devel files
+Development files and headers for libextractor.
 
 %prep
-rm -rf $RPM_BUILD_ROOT
 %setup -q 
 
 %build
-%configure2_5x
-make
+%configure2_5x \
+	--disable-rpath
+
+%make -j1
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 %makeinstall_std
-%find_lang %name
+%find_lang %{name}
 
 %post -n %{libname} -p /sbin/ldconfig
 
@@ -87,9 +90,9 @@ rm -rf $RPM_BUILD_ROOT
 %_remove_install_info extractor
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-%files -f %name.lang
+%files -f %{name}.lang
 %defattr(-,root,root)
 %_bindir/*
 %_mandir/man1/*
