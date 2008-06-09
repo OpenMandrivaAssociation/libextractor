@@ -79,12 +79,16 @@ rm -rf %{buildroot}
 %makeinstall_std
 %find_lang %{name}
 
+%if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
+%endif
 
 %post
 %_install_info extractor
 
+%if %mdkversion < 200900
 %postun -n %{libname} -p /sbin/ldconfig
+%endif
 
 %preun
 %_remove_install_info extractor
