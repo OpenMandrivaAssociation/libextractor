@@ -6,7 +6,7 @@
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
-Version:	0.5.20c
+Version:	0.5.21
 Release:	%mkrel 1
 License:	BSD
 Group:		System/Libraries
@@ -23,6 +23,7 @@ BuildRequires:	libflac-devel
 BuildRequires:	glib-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	libgsf-devel
+BuildRequires:	librpm-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
@@ -70,7 +71,9 @@ Development files and headers for libextractor.
 
 %build
 %configure2_5x \
-	--disable-rpath
+	--disable-rpath \
+	--enable-exiv2 \
+	--disable-ffmpeg
 
 %make -j1
 
@@ -98,15 +101,15 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%_bindir/*
-%_mandir/man1/*
-%_mandir/man3/*
-%_infodir/extractor.info.*
+%{_bindir}/*
+%{_mandir}/man1/*
+%{_mandir}/man3/*
+%{_infodir}/extractor.info.*
 
 %files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/%{name}.so.%{major}*
-%{_libdir}/%name
+%{_libdir}/%{name}
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
