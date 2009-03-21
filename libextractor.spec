@@ -1,13 +1,15 @@
 %define realname extractor
 
 %define major 1
+%define common_major 1
 %define libname %mklibname %{realname} %{major}
+%define libcommon %mklibname extractor_common %{common_major}
 %define libnamedev %mklibname %{realname} -d
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.5.22
-Release:	%mkrel 2
+Release:	%mkrel 1
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
@@ -41,9 +43,8 @@ various additional MIME types are detected.
 
 %package -n %{libname}
 Summary:	Libextractor library used to extract meta-data from files 
-Group:		Development/Other
+Group:		System/Libraries
 Conflicts:	%{mklibname -d extractor 1} < 0.5.19a-2
-Requires:	%{name} = %{version}-%{release}
 
 %description -n %{libname}
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -57,11 +58,20 @@ from a file and print the results to stdout. Currently, it supports the formats
 HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also, 
 various additional MIME types are detected.
 
+%package -n %{libcommon}
+Summary:        Libextractor library for common functions
+Group:          System/Libraries
+
+%description -n %{libcommon}
+Common function library of libextractor.
+
 %package -n %{libnamedev}
 Summary:	Libextractor library headers and development libraries
 Group:		Development/Other
 Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libcommon} = %{version}-%{release}
 Provides:	libextractor-devel = %{version}-%{release}
+Provides:	extractor-devel = %{version}-%{release}
 Obsoletes:	%mklibname -d extractor 1
 
 %description -n %{libnamedev}
@@ -76,7 +86,8 @@ export CFLAGS="${CFLAGS} -lgthread-2.0"
 %configure2_5x \
 	--disable-rpath \
 	--enable-exiv2 \
-	--disable-ffmpeg
+	--disable-ffmpeg \
+	--with-plugindirname=%{name}%{major}
 
 %make -j1
 
@@ -112,11 +123,17 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/%{name}.so.%{major}*
-%{_libdir}/%{name}
+%{_libdir}/%{name}%{major}
+
+%files -n %{libcommon}
+%defattr(-,root,root)
+%{_libdir}/%{name}_common.so.%{common_major}*
 
 %files -n %{libnamedev}
 %defattr(-,root,root)
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}.la
+%{_libdir}/%{name}_common.so
+%{_libdir}/%{name}_common.la
 %{_includedir}/*
 %{_libdir}/pkgconfig/*
