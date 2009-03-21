@@ -7,7 +7,7 @@
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.5.22
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
@@ -23,7 +23,8 @@ BuildRequires:	libflac-devel
 BuildRequires:	glib-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	libgsf-devel
-BuildRequires:	librpm-devel
+# Does not support librpm4.6
+#BuildRequires:	librpm-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
