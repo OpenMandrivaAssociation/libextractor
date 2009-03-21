@@ -1,7 +1,7 @@
 %define realname extractor
 
 %define major 1
-%define common_major 1
+%define common_major 0
 %define libname %mklibname %{realname} %{major}
 %define libcommon %mklibname extractor_common %{common_major}
 %define libnamedev %mklibname %{realname} -d
