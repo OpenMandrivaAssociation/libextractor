@@ -8,7 +8,7 @@
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
-Version:	0.5.22
+Version:	0.5.23
 Release:	%mkrel 1
 License:	BSD
 Group:		System/Libraries
@@ -25,8 +25,9 @@ BuildRequires:	libflac-devel
 BuildRequires:	glib-devel
 BuildRequires:	gtk+2-devel
 BuildRequires:	libgsf-devel
-# Does not support librpm4.6
-#BuildRequires:	librpm-devel
+BuildRequires:	libexiv-devel
+BuildRequires:	librpm-devel
+BuildRequires:	gettext-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
@@ -81,8 +82,7 @@ Development files and headers for libextractor.
 %setup -q 
 
 %build
-export CFLAGS="${CFLAGS} -lgthread-2.0"
-
+autoreconf -fi
 %configure2_5x \
 	--disable-rpath \
 	--enable-exiv2 \
