@@ -1,6 +1,6 @@
 %define realname extractor
 
-%define major 1
+%define major 3
 %define common_major 0
 %define libname %mklibname %{realname} %{major}
 %define libcommon %mklibname extractor_common %{common_major}
@@ -8,8 +8,8 @@
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
-Version:	0.5.23
-Release:	%mkrel 2
+Version:	0.6.0
+Release:	%mkrel 1
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
