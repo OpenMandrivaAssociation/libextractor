@@ -9,7 +9,7 @@
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.6.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
