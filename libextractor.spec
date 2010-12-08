@@ -9,11 +9,12 @@
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.6.2
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
-Source:		http://ftpmirror.gnu.org/libextractor/%{name}-%{version}.tar.gz
+Source0:	http://ftpmirror.gnu.org/libextractor/%{name}-%{version}.tar.gz
+Patch0:		libextractor-0.6.2-rpm5.patch
 Conflicts:	%{mklibname extractor 1} < 0.5.19a-2
 Requires:	%{libname} = %{version}-%{release}
 BuildRequires:	zlib-devel
@@ -80,6 +81,8 @@ Development files and headers for libextractor.
 
 %prep
 %setup -q 
+%patch0 -p1 -b .rpm5~
+autoreconf -fi
 
 %build
 %configure2_5x \
