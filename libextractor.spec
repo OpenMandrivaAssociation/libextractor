@@ -9,7 +9,7 @@
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.6.2
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
@@ -43,12 +43,12 @@ from a file and print the results to stdout. Currently, it supports the formats
 HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also, 
 various additional MIME types are detected.
 
-%package -n %{libname}
+%package -n	%{libname}
 Summary:	Libextractor library used to extract meta-data from files 
 Group:		System/Libraries
 Conflicts:	%{mklibname -d extractor 1} < 0.5.19a-2
 
-%description -n %{libname}
+%description -n	%{libname}
 libextractor is a library used to extract meta-data from files of arbitrary 
 type. It is designed to use helper-libraries to perform the actual extraction, 
 and to be trivially extendable by linking against external extractors for 
@@ -60,14 +60,14 @@ from a file and print the results to stdout. Currently, it supports the formats
 HTML, PDF, PS, MP3, OGG, JPEG, GIF, PNG, RPM, ZIP, Real, QT and ASF. Also, 
 various additional MIME types are detected.
 
-%package -n %{libcommon}
+%package -n	%{libcommon}
 Summary:        Libextractor library for common functions
 Group:          System/Libraries
 
-%description -n %{libcommon}
+%description -n	%{libcommon}
 Common function library of libextractor.
 
-%package -n %{libnamedev}
+%package -n	%{libnamedev}
 Summary:	Libextractor library headers and development libraries
 Group:		Development/Other
 Requires:	%{libname} = %{version}-%{release}
@@ -76,7 +76,7 @@ Provides:	libextractor-devel = %{version}-%{release}
 Provides:	extractor-devel = %{version}-%{release}
 Obsoletes:	%mklibname -d extractor 1
 
-%description -n %{libnamedev}
+%description -n	%{libnamedev}
 Development files and headers for libextractor.
 
 %prep
