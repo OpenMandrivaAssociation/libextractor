@@ -9,7 +9,7 @@
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
 Version:	0.6.2
-Release:	%mkrel 5
+Release:	6
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
@@ -29,7 +29,6 @@ BuildRequires:	libgsf-devel
 BuildRequires:	libexiv-devel
 BuildRequires:	librpm-devel
 BuildRequires:	gettext-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -94,7 +93,6 @@ autoreconf -fi
 make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 %find_lang %{name}
 
@@ -104,27 +102,20 @@ rm -rf %{buildroot}
 %preun
 %_remove_install_info extractor
 
-%clean
-rm -rf %{buildroot}
-
 %files -f %{name}.lang
-%defattr(-,root,root)
 %{_bindir}/*
 %{_mandir}/man1/*
 %{_mandir}/man3/*
 %{_infodir}/extractor.info.*
 
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/%{name}.so.%{major}*
 %{_libdir}/%{name}%{major}
 
 %files -n %{libcommon}
-%defattr(-,root,root)
 %{_libdir}/%{name}_common.so.%{common_major}*
 
 %files -n %{libnamedev}
-%defattr(-,root,root)
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}.la
 %{_libdir}/%{name}_common.so
