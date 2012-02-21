@@ -117,8 +117,6 @@ make
 
 %files -n %{libnamedev}
 %{_libdir}/%{name}.so
-%{_libdir}/%{name}.la
 %{_libdir}/%{name}_common.so
-%{_libdir}/%{name}_common.la
 %{_includedir}/*
 %{_libdir}/pkgconfig/*
