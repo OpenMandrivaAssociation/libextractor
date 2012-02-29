@@ -8,8 +8,8 @@
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
-Version:	0.6.2
-Release:	7
+Version:	0.6.3
+Release:	1
 License:	BSD
 Group:		System/Libraries
 URL:		http://www.gnunet.org/libextractor/
@@ -94,6 +94,9 @@ make
 
 %install
 %makeinstall_std
+
+find %{buildroot} -name *.la -delete
+
 %find_lang %{name}
 
 %post
