@@ -1,14 +1,15 @@
 %define realname extractor
 
 %define major 3
-%define common_major 0
+%define common_major 1
 %define libname %mklibname %{realname} %{major}
 %define libcommon %mklibname extractor_common %{common_major}
 %define libnamedev %mklibname %{realname} -d
+%define libnamedev_static %mklibname %{realname} -d -s
 
 Summary:	Libextractor library used to extract meta-data from files
 Name:		libextractor
-Version:	0.6.3
+Version:	1.0.0
 Release:	1
 License:	BSD
 Group:		System/Libraries
@@ -19,15 +20,15 @@ Conflicts:	%{mklibname extractor 1} < 0.5.19a-2
 Requires:	%{libname} = %{version}-%{release}
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
-BuildRequires:	libltdl-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	libmpeg2dec-devel
-BuildRequires:	libflac-devel
-BuildRequires:	glib-devel
-BuildRequires:	gtk+2-devel
-BuildRequires:	libgsf-devel
-BuildRequires:	libexiv-devel
-BuildRequires:	librpm-devel
+BuildRequires:	libtool-devel
+BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(libmpeg2)
+BuildRequires:	pkgconfig(flac)
+BuildRequires:	glib2-devel
+BuildRequires:	pkgconfig(gtk+-3.0)
+BuildRequires:	pkgconfig(libgsf-1)
+BuildRequires:	pkgconfig(exiv2)
+BuildRequires:	pkgconfig(rpm)
 BuildRequires:	gettext-devel
 
 %description
@@ -78,12 +79,25 @@ Obsoletes:	%mklibname -d extractor 1
 %description -n	%{libnamedev}
 Development files and headers for libextractor.
 
+
+%package -n	%{libnamedev_static}
+Summary:	Libextractor library headers and development libraries
+Group:		Development/Other
+Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libcommon} = %{version}-%{release}
+Requires:	extractor-devel = %{version}-%{release}
+Provides:	libextractor-static-devel = %{version}-%{release}
+Provides:	extractor-static-devel = %{version}-%{release}
+
+%description -n	%{libnamedev_static}
+Development static libs for libextractor.
+
 %prep
 %setup -q 
 %patch0 -p1 -b .rpm5~
-autoreconf -fi
 
 %build
+autoreconf -fi
 %configure2_5x \
 	--disable-rpath \
 	--enable-exiv2 \
@@ -100,16 +114,16 @@ find %{buildroot} -name *.la -delete
 %find_lang %{name}
 
 %post
-%_install_info extractor
+%_install_info libextractor
 
 %preun
-%_remove_install_info extractor
+%_remove_install_info libextractor
 
 %files -f %{name}.lang
 %{_bindir}/*
 %{_mandir}/man1/*
 %{_mandir}/man3/*
-%{_infodir}/extractor.info.*
+%{_infodir}/libextractor.info.*
 
 %files -n %{libname}
 %{_libdir}/%{name}.so.%{major}*
@@ -123,3 +137,6 @@ find %{buildroot} -name *.la -delete
 %{_libdir}/%{name}_common.so
 %{_includedir}/*
 %{_libdir}/pkgconfig/*
+
+%files -n %{libnamedev_static}
+%{_libdir}/*.a
