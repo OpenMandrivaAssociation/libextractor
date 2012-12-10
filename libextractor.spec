@@ -7,9 +7,9 @@
 %define libnamedev %mklibname %{realname} -d
 %define libnamedev_static %mklibname %{realname} -d -s
 
-Summary:	Libextractor library used to extract meta-data from files
+Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.0.0
+Version:1.0.1
 Release:	1
 License:	BSD
 Group:		System/Libraries
@@ -18,18 +18,19 @@ Source0:	http://ftpmirror.gnu.org/libextractor/%{name}-%{version}.tar.gz
 Patch0:		libextractor-0.6.2-rpm5.patch
 Conflicts:	%{mklibname extractor 1} < 0.5.19a-2
 Requires:	%{libname} = %{version}-%{release}
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	bzip2-devel
 BuildRequires:	libtool-devel
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	pkgconfig(flac)
-BuildRequires:	glib2-devel
+BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(libgsf-1)
 BuildRequires:	pkgconfig(exiv2)
 BuildRequires:	pkgconfig(rpm)
 BuildRequires:	gettext-devel
+
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -105,7 +106,6 @@ autoreconf -fi
 	--with-plugindirname=%{name}%{major}
 
 make
-
 %install
 %makeinstall_std
 
@@ -123,20 +123,24 @@ find %{buildroot} -name *.la -delete
 %{_bindir}/*
 %{_mandir}/man1/*
 %{_mandir}/man3/*
-%{_infodir}/libextractor.info.*
+%{_infodir}/*
 
 %files -n %{libname}
+%doc ChangeLog NEWS COPYING README AUTHORS
 %{_libdir}/%{name}.so.%{major}*
 %{_libdir}/%{name}%{major}
 
 %files -n %{libcommon}
+%doc ChangeLog NEWS COPYING README AUTHORS
 %{_libdir}/%{name}_common.so.%{common_major}*
 
 %files -n %{libnamedev}
+%doc ChangeLog NEWS COPYING README AUTHORS
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}_common.so
 %{_includedir}/*
 %{_libdir}/pkgconfig/*
 
 %files -n %{libnamedev_static}
+%doc ChangeLog NEWS COPYING README AUTHORS
 %{_libdir}/*.a
