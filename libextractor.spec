@@ -114,8 +114,6 @@ find %{buildroot} -name *.la -delete
 %find_lang %{name}
 
 
-%preun
-%_remove_install_info libextractor
 
 %files -f %{name}.lang
 %{_bindir}/*
