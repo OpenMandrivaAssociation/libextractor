@@ -113,8 +113,6 @@ find %{buildroot} -name *.la -delete
 
 %find_lang %{name}
 
-%post
-%_install_info libextractor
 
 %preun
 %_remove_install_info libextractor
