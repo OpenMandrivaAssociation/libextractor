@@ -6,7 +6,7 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.1
+Version:	1.4
 Release:	2
 License:	BSD
 Group:		System/Libraries
@@ -107,7 +107,7 @@ Development files and headers for libextractor.
 
 %build
 autoreconf -fi
-%configure2_5x \
+%configure \
 	--disable-static \
 	--disable-rpath \
 	--enable-exiv2 \
