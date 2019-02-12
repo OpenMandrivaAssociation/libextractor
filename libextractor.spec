@@ -6,14 +6,13 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.4
+Version:	1.9
 Release:	1
 License:	BSD
 Group:		System/Libraries
 Url:		http://www.gnunet.org/libextractor/
 Source0:	http://ftpmirror.gnu.org/libextractor/%{name}-%{version}.tar.gz
-Patch0:		libextractor-1.3-rpm5.patch
-BuildRequires:	bzip2-devel
+BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 BuildRequires:	libtool-devel
 BuildRequires:	pkgconfig(exiv2)
@@ -102,8 +101,7 @@ Development files and headers for libextractor.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q
-%patch0 -p1 -b .rpm5~
+%autosetup -p1
 
 %build
 autoreconf -fi
@@ -114,10 +112,10 @@ autoreconf -fi
 	--disable-ffmpeg \
 	--with-plugindirname=%{name}%{major}
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 %find_lang %{name}
 
