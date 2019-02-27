@@ -12,6 +12,7 @@ License:	BSD
 Group:		System/Libraries
 Url:		http://www.gnunet.org/libextractor/
 Source0:	http://ftpmirror.gnu.org/libextractor/%{name}-%{version}.tar.gz
+Patch0:		libextractor-1.8-exiv2-0.27.patch
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 BuildRequires:	libtool-devel
@@ -21,6 +22,7 @@ BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(libgsf-1)
 BuildRequires:	pkgconfig(libmpeg2)
+BuildRequires:	pkgconfig(libssh)
 BuildRequires:	pkgconfig(rpm)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(zlib)
