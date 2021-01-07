@@ -1,4 +1,4 @@
-%define major 3
+%define major 2
 %define common_major 1
 %define libname %mklibname extractor %{major}
 %define libcommon %mklibname extractor_common %{common_major}
@@ -119,4 +119,3 @@ autoreconf -fi
 %make_install
 
 %find_lang %{name}
-
