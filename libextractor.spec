@@ -6,7 +6,7 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.10
+Version:	1.11
 Release:	1
 License:	BSD
 Group:		System/Libraries
