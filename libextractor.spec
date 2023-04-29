@@ -1,13 +1,15 @@
 %define major 3
 %define common_major 1
-%define libname %mklibname extractor %{major}
-%define libcommon %mklibname extractor_common %{common_major}
+%define oldlibname %mklibname extractor 3
+%define libname %mklibname extractor
+%define oldlibcommon %mklibname extractor_common 1
+%define libcommon %mklibname extractor_common
 %define devname %mklibname extractor -d
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
 Version:	1.11
-Release:	2
+Release:	3
 License:	BSD
 Group:		System/Libraries
 Url:		http://www.gnunet.org/libextractor/
@@ -49,6 +51,7 @@ various additional MIME types are detected.
 %package -n	%{libname}
 Summary:	Libextractor library used to extract meta-data from files 
 Group:		System/Libraries
+%rename %{oldlibname}
 
 %description -n	%{libname}
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -72,6 +75,7 @@ various additional MIME types are detected.
 %package -n	%{libcommon}
 Summary:	Libextractor library for common functions
 Group:		System/Libraries
+%rename %{oldlibcommon}
 
 %description -n	%{libcommon}
 Common function library of libextractor.
