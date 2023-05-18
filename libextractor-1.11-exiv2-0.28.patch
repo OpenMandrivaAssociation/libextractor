@@ -1,0 +1,227 @@
+diff -up libextractor-1.11/src/plugins/exiv2_extractor.cc.omv~ libextractor-1.11/src/plugins/exiv2_extractor.cc
+--- libextractor-1.11/src/plugins/exiv2_extractor.cc.omv~	2023-05-18 04:11:32.744148486 +0200
++++ libextractor-1.11/src/plugins/exiv2_extractor.cc	2023-05-18 04:19:26.209676080 +0200
+@@ -90,7 +90,7 @@ virtual int close ();
+  * @param rcount number of bytes to read
+  * @return buffer with data read, empty buffer (!) on failure (!)
+  */
+-virtual Exiv2::DataBuf read (long rcount);
++virtual Exiv2::DataBuf read (size_t rcount);
+ 
+ /**
+  * Read up to 'rcount' bytes into 'buf'.
+@@ -99,8 +99,8 @@ virtual Exiv2::DataBuf read (long rcount
+  * @param rcount size of 'buf'
+  * @return number of bytes read successfully, 0 on failure (!)
+  */
+-virtual long read (Exiv2::byte *buf,
+-                   long rcount);
++virtual size_t read (Exiv2::byte *buf,
++                   size_t rcount);
+ 
+ /**
+  * Read a single character.
+@@ -117,8 +117,8 @@ virtual int getb ();
+  * @param wcount how many bytes to write
+  * @return -1 (always fails)
+  */
+-virtual long write (const Exiv2::byte *data,
+-                    long wcount);
++virtual size_t write (const Exiv2::byte *data,
++                    size_t wcount);
+ 
+ /**
+  * Write to stream.
+@@ -126,7 +126,7 @@ virtual long write (const Exiv2::byte *d
+  * @param src stream to copy
+  * @return -1 (always fails)
+  */
+-virtual long write (Exiv2::BasicIo &src);
++virtual size_t write (Exiv2::BasicIo &src);
+ 
+ /**
+  * Write a single byte.
+@@ -172,7 +172,7 @@ virtual int munmap ();
+  *
+  * @return -1 on error
+  */
+-virtual long int tell (void) const;
++virtual size_t tell (void) const;
+ 
+ /**
+  * Return overall size of the file.
+@@ -213,7 +213,7 @@ virtual bool eof () const;
+  *
+  * @throws error
+  */
+-virtual std::string path () const;
++virtual const std::string &path () const noexcept;
+ 
+ #ifdef EXV_UNICODE_PATH
+ /**
+@@ -230,7 +230,9 @@ virtual std::wstring wpath () const;
+  *
+  * @throws error
+  */
+-virtual Exiv2::BasicIo::AutoPtr temporary () const;
++virtual Exiv2::BasicIo::UniquePtr temporary () const;
++
++virtual void populateFakeData() {}
+ 
+ };
+ 
+@@ -266,7 +268,7 @@ ExtractorIO::close ()
+  * @return buffer with data read, empty buffer (!) on failure (!)
+  */
+ Exiv2::DataBuf
+-ExtractorIO::read (long rcount)
++ExtractorIO::read (size_t rcount)
+ {
+   void *data;
+   ssize_t ret;
+@@ -284,9 +286,9 @@ ExtractorIO::read (long rcount)
+  * @param rcount size of 'buf'
+  * @return number of bytes read successfully, 0 on failure (!)
+  */
+-long
++size_t
+ ExtractorIO::read (Exiv2::byte *buf,
+-                   long rcount)
++                   size_t rcount)
+ {
+   void *data;
+   ssize_t ret;
+@@ -320,9 +322,9 @@ ExtractorIO::getb ()
+ 
+   if (1 != ec->read (ec->cls, &data, 1))
+ #if EXIV2_TEST_VERSION (0,27,0)
+-    throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++    throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-    throw Exiv2::BasicError<char> (42 /* error code */);
++    throw Exiv2::Error (42 /* error code */);
+ #endif
+   r = (const unsigned char *) data;
+   return *r;
+@@ -336,9 +338,9 @@ ExtractorIO::getb ()
+  * @param wcount how many bytes to write
+  * @return -1 (always fails)
+  */
+-long
++size_t
+ ExtractorIO::write (const Exiv2::byte *data,
+-                    long wcount)
++                    size_t wcount)
+ {
+   return -1;
+ }
+@@ -350,7 +352,7 @@ ExtractorIO::write (const Exiv2::byte *d
+  * @param src stream to copy
+  * @return -1 (always fails)
+  */
+-long
++size_t
+ ExtractorIO::write (Exiv2::BasicIo &src)
+ {
+   return -1;
+@@ -379,9 +381,9 @@ void
+ ExtractorIO::transfer (Exiv2::BasicIo& src)
+ {
+ #if EXIV2_TEST_VERSION (0,27,0)
+-  throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++  throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-  throw Exiv2::BasicError<char> (42 /* error code */);
++  throw Exiv2::Error (42 /* error code */);
+ #endif
+ }
+ 
+@@ -428,9 +430,9 @@ Exiv2::byte *
+ ExtractorIO::mmap (bool isWritable)
+ {
+ #if EXIV2_TEST_VERSION (0,27,0)
+-  throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++  throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-  throw Exiv2::BasicError<char> (42 /* error code */);
++  throw Exiv2::Error (42 /* error code */);
+ #endif
+ }
+ 
+@@ -452,7 +454,7 @@ ExtractorIO::munmap ()
+  *
+  * @return -1 on error
+  */
+-long int
++size_t
+ ExtractorIO::tell (void) const
+ {
+   return (long) ec->seek (ec->cls, 0, SEEK_CUR);
+@@ -516,13 +518,13 @@ ExtractorIO::eof () const
+  *
+  * @throws error
+  */
+-std::string
+-ExtractorIO::path () const
++const std::string &
++ExtractorIO::path () const noexcept
+ {
+ #if EXIV2_TEST_VERSION (0,27,0)
+-  throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++  throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-  throw Exiv2::BasicError<char> (42 /* error code */);
++  throw Exiv2::Error (42 /* error code */);
+ #endif
+ }
+ 
+@@ -537,9 +539,9 @@ std::wstring
+ ExtractorIO::wpath () const
+ {
+ #if EXIV2_TEST_VERSION (0,27,0)
+-  throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++  throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-  throw Exiv2::BasicError<char> (42 /* error code */);
++  throw Exiv2::Error (42 /* error code */);
+ #endif
+ }
+ 
+@@ -552,14 +554,14 @@ ExtractorIO::wpath () const
+  *
+  * @throws error
+  */
+-Exiv2::BasicIo::AutoPtr
++Exiv2::BasicIo::UniquePtr
+ ExtractorIO::temporary () const
+ {
+   fprintf (stderr, "throwing temporary error\n");
+ #if EXIV2_TEST_VERSION (0,27,0)
+-  throw Exiv2::BasicError<char> (Exiv2::kerDecodeLangAltQualifierFailed);
++  throw Exiv2::Error (Exiv2::ErrorCode::kerDecodeLangAltQualifierFailed);
+ #else
+-  throw Exiv2::BasicError<char> (42 /* error code */);
++  throw Exiv2::Error (42 /* error code */);
+ #endif
+ }
+ 
+@@ -737,8 +739,8 @@ EXTRACTOR_exiv2_extract_method (struct E
+ #if ! EXIV2_TEST_VERSION (0,24,0)
+     Exiv2::LogMsg::setLevel (Exiv2::LogMsg::mute);
+ #endif
+-    std::auto_ptr<Exiv2::BasicIo> eio (new ExtractorIO (ec));
+-    Exiv2::Image::AutoPtr image = Exiv2::ImageFactory::open (eio);
++    std::unique_ptr<Exiv2::BasicIo> eio (new ExtractorIO (ec));
++    Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open (std::move(eio));
+     if (0 == image.get ())
+       return;
+     image->readMetadata ();
+@@ -822,7 +824,7 @@ EXTRACTOR_exiv2_extract_method (struct E
+       ADDXMP ("Xmp.lr.hierarchicalSubject", EXTRACTOR_METATYPE_SUBJECT);
+     }
+   }
+-  catch (const Exiv2::AnyError& e)
++  catch (const Exiv2::Error& e)
+   {
+ #if DEBUG
+     std::cerr << "Caught Exiv2 exception '" << e << "'\n";
