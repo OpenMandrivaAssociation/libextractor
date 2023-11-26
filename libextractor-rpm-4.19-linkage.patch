@@ -1,0 +1,12 @@
+diff -up libextractor-1.11/src/plugins/Makefile.am.omv~ libextractor-1.11/src/plugins/Makefile.am
+--- libextractor-1.11/src/plugins/Makefile.am.omv~	2023-11-26 11:41:26.845976856 +0100
++++ libextractor-1.11/src/plugins/Makefile.am	2023-11-26 11:41:46.443175184 +0100
+@@ -581,7 +581,7 @@ libextractor_rpm_la_SOURCES = \
+ libextractor_rpm_la_LDFLAGS = \
+   $(PLUGINFLAGS)
+ libextractor_rpm_la_LIBADD = \
+-  -lrpm -lpthread $(XLIB)
++  -lrpm -lrpmio -lpthread $(XLIB)
+ 
+ test_rpm_SOURCES = \
+   test_rpm.c
