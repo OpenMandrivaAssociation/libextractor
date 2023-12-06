@@ -8,14 +8,13 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.11
-Release:	5
+Version:	1.13
+Release:	1
 License:	BSD
 Group:		System/Libraries
 Url:		https://www.gnu.org/software/libextractor/
 Source0:	https://ftp.gnu.org/pub/gnu/libextractor/%{name}-%{version}.tar.gz
-Patch0:		libextractor-1.11-exiv2-0.28.patch
-Patch1:		libextractor-rpm-4.19-linkage.patch
+Patch0:		libextractor-rpm-4.19-linkage.patch
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 BuildRequires:	libtool-devel
