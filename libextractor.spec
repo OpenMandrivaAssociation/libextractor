@@ -9,7 +9,7 @@
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
 Version:	1.13
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Libraries
 Url:		https://www.gnu.org/software/libextractor/
