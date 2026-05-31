@@ -1,0 +1,109 @@
+diff -up libextractor-1.14/configure.ac.omv~ libextractor-1.14/configure.ac
+--- libextractor-1.14/configure.ac.omv~	2026-05-31 21:34:37.647706908 +0200
++++ libextractor-1.14/configure.ac	2026-05-31 21:34:37.659953227 +0200
+@@ -256,29 +256,30 @@ AC_CHECK_HEADERS([langinfo.h])
+ # Check for libltdl header (#2999)
+ ltdl=0
+ AC_MSG_CHECKING(for libltdl)
++CPPFLAGS="$CPPFLAGS -I/usr/include/sltdl"
+ AC_ARG_WITH(ltdl,
+    [  --with-ltdl=PFX    base of libltdl installation],
+    [AC_MSG_RESULT([$with_ltdl])
+     AS_CASE([$with_ltdl],
+       [no],[],
+       [yes],[
+-        AC_CHECK_HEADERS(ltdl.h,
+-          AC_CHECK_LIB([ltdl], [lt_dlopenext],
++        AC_CHECK_HEADERS(sltdl.h,
++          AC_CHECK_LIB([sltdl], [lt_dlopenext],
+             ltdl=1))
+       ],[
+         OLD_LIBS="$LIBS"
+         LIBS="-L$with_ltdl/lib $LIBS"
+         AM_CPPFLAGS="-I$with_ltdl/include $AM_CPPFLAGS"
+-        AC_CHECK_HEADERS(ltdl.h,
+-          AC_CHECK_LIB([ltdl], [lt_dlopenext],
++        AC_CHECK_HEADERS(sltdl.h,
++          AC_CHECK_LIB([sltdl], [lt_dlopenext],
+             EXT_LIB_PATH="-L$with_ltdl/lib $EXT_LIB_PATH"
+             ltdl=1))
+         LIBS="$OLD_LIBS"
+       ])
+    ],
+    [AC_MSG_RESULT([--with-ltdl not specified])
+-    AC_CHECK_HEADERS(ltdl.h,
+-     AC_CHECK_LIB([ltdl], [lt_dlopenext],
++    AC_CHECK_HEADERS(sltdl.h,
++     AC_CHECK_LIB([sltdl], [lt_dlopenext],
+       ltdl=1))])
+ AS_IF([test x$ltdl = x1],
+       [AC_MSG_RESULT([libltdl found])],
+diff -up libextractor-1.14/src/main/extractor.c.omv~ libextractor-1.14/src/main/extractor.c
+--- libextractor-1.14/src/main/extractor.c.omv~	2026-05-31 21:38:09.314707985 +0200
++++ libextractor-1.14/src/main/extractor.c	2026-05-31 21:38:14.474983268 +0200
+@@ -23,7 +23,7 @@
+ #include <dirent.h>
+ #include <sys/types.h>
+ #include <signal.h>
+-#include <ltdl.h>
++#include <sltdl/sltdl.h>
+ #include "extractor_datasource.h"
+ #include "extractor_ipc.h"
+ #include "extractor_logging.h"
+diff -up libextractor-1.14/src/main/extractor_plugins.c.omv~ libextractor-1.14/src/main/extractor_plugins.c
+--- libextractor-1.14/src/main/extractor_plugins.c.omv~	2026-05-31 21:37:17.469519943 +0200
++++ libextractor-1.14/src/main/extractor_plugins.c	2026-05-31 21:37:58.580470878 +0200
+@@ -124,7 +124,6 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR
+   wchar_t wlibname[4097];
+   char llibname[4097];
+ #endif
+-  lt_dladvise advise;
+ 
+   if (EXTRACTOR_OPTION_DISABLED == plugin->flags)
+     return -1;
+@@ -137,9 +136,6 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR
+     plugin->flags = EXTRACTOR_OPTION_DISABLED;
+     return -1;
+   }
+-  lt_dladvise_init (&advise);
+-  lt_dladvise_ext (&advise);
+-  lt_dladvise_local (&advise);
+ #if WINDOWS
+   wlibname[0] = L'\0';
+   llibname[0] = '\0';
+@@ -159,10 +155,8 @@ EXTRACTOR_plugin_load_ (struct EXTRACTOR
+   plugin->libraryHandle = lt_dlopenadvise (llibname,
+                                            advise);
+ #else
+-  plugin->libraryHandle = lt_dlopenadvise (plugin->libname,
+-                                           advise);
++  plugin->libraryHandle = lt_dlopen (plugin->libname);
+ #endif
+-  lt_dladvise_destroy (&advise);
+   if (NULL == plugin->libraryHandle)
+   {
+     LOG ("Loading `%s' plugin failed (using name `%s'): %s\n",
+diff -up libextractor-1.14/src/main/extractor_plugins.h.omv~ libextractor-1.14/src/main/extractor_plugins.h
+--- libextractor-1.14/src/main/extractor_plugins.h.omv~	2026-05-31 21:35:24.280233746 +0200
++++ libextractor-1.14/src/main/extractor_plugins.h	2026-05-31 21:35:34.395418536 +0200
+@@ -28,7 +28,7 @@
+ #include "platform.h"
+ #include "extractor.h"
+ #include <signal.h>
+-#include <ltdl.h>
++#include <sltdl/sltdl.h>
+ 
+ 
+ /**
+diff -up libextractor-1.14/src/main/extractor_plugpath.c.omv~ libextractor-1.14/src/main/extractor_plugpath.c
+--- libextractor-1.14/src/main/extractor_plugpath.c.omv~	2026-05-31 21:35:42.608441331 +0200
++++ libextractor-1.14/src/main/extractor_plugpath.c	2026-05-31 21:35:48.073442440 +0200
+@@ -28,7 +28,7 @@
+ #include <dirent.h>
+ #include <sys/types.h>
+ #include <signal.h>
+-#include <ltdl.h>
++#include <sltdl/sltdl.h>
+ 
+ #include "extractor_plugpath.h"
+ #include "extractor_logging.h"

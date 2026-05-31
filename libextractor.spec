@@ -8,21 +8,18 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.13
-Release:	2
+Version:	1.14
+Release:	1
 License:	BSD
 Group:		System/Libraries
 Url:		https://www.gnu.org/software/libextractor/
 Source0:	https://ftp.gnu.org/pub/gnu/libextractor/%{name}-%{version}.tar.gz
-Patch0:		libextractor-rpm-4.19-linkage.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
-BuildRequires:	libtool-devel
 BuildRequires:	pkgconfig(exiv2)
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(glib-2.0)
@@ -33,6 +30,17 @@ BuildRequires:	pkgconfig(libssh)
 BuildRequires:	pkgconfig(rpm)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(sltdl)
+BuildSystem:	autotools
+BuildOption:	--disable-static
+BuildOption:	--disable-rpath
+BuildOption:	--enable-exiv2
+BuildOption:	--disable-ffmpeg
+BuildOption:	--with-plugindirname=%{name}%{major}
+
+%patchlist
+libextractor-rpm-4.19-linkage.patch
+libextractor-sltdl.patch
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
@@ -109,23 +117,7 @@ Development files and headers for libextractor.
 %{_includedir}/*.h
 %{_libdir}/pkgconfig/%{name}.pc
 
-#----------------------------------------------------------------------------
-
-%prep
-%autosetup -p1
-
-%build
-autoreconf -fi
-%configure \
-	--disable-static \
-	--disable-rpath \
-	--enable-exiv2 \
-	--disable-ffmpeg \
-	--with-plugindirname=%{name}%{major}
-
-%make_build
-
-%install
-%make_install
-
-%find_lang %{name}
+%prep -a
+slibtoolize --force
+aclocal -I m4
+autoconf
