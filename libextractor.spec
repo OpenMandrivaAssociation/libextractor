@@ -8,7 +8,7 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.14
+Version:	1.19
 Release:	1
 License:	BSD
 Group:		System/Libraries
@@ -39,8 +39,8 @@ BuildOption:	--disable-ffmpeg
 BuildOption:	--with-plugindirname=%{name}%{major}
 
 %patchlist
-libextractor-rpm-4.19-linkage.patch
-libextractor-sltdl.patch
+# dropped (no longer applies): libextractor-rpm-4.19-linkage.patch
+# dropped (no longer applies): libextractor-sltdl.patch
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
