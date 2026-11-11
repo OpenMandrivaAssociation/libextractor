@@ -1,0 +1,24 @@
+diff -up -r libextractor-1.20.orig/src/plugins/Makefile.am libextractor-1.20/src/plugins/Makefile.am
+--- libextractor-1.20.orig/src/plugins/Makefile.am	2026-11-11 21:07:21.087915224 +0100
++++ libextractor-1.20/src/plugins/Makefile.am	2026-11-11 21:07:21.111199272 +0100
+@@ -1074,7 +1074,7 @@ libextractor_rpm_la_SOURCES = \
+ libextractor_rpm_la_LDFLAGS = \
+   $(PLUGINFLAGS)
+ libextractor_rpm_la_LIBADD = \
+-  -lrpm -lpthread $(XLIB)
++  -lrpm -lrpmio -lpthread $(XLIB)
+ 
+ test_rpm_SOURCES = \
+   test_rpm.c
+diff -up -r libextractor-1.20.orig/src/plugins/Makefile.in libextractor-1.20/src/plugins/Makefile.in
+--- libextractor-1.20.orig/src/plugins/Makefile.in	2026-11-11 21:07:21.089733106 +0100
++++ libextractor-1.20/src/plugins/Makefile.in	2026-11-11 21:07:21.111801945 +0100
+@@ -2749,7 +2749,7 @@ libextractor_rpm_la_LDFLAGS = \
+   $(PLUGINFLAGS)
+ 
+ libextractor_rpm_la_LIBADD = \
+-  -lrpm -lpthread $(XLIB)
++  -lrpm -lrpmio -lpthread $(XLIB)
+ 
+ test_rpm_SOURCES = \
+   test_rpm.c

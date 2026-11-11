@@ -56,8 +56,8 @@ BuildOption:	--enable-exiv2
 BuildOption:	--with-plugindirname=%{name}%{major}
 
 %patchlist
-# dropped (no longer applies): libextractor-rpm-4.19-linkage.patch
-# dropped (no longer applies): libextractor-sltdl.patch
+libextractor-sltdl.patch
+libextractor-rpm-linkage.patch
 
 %description
 libextractor is a library used to extract meta-data from files of arbitrary 
