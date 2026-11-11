@@ -8,9 +8,9 @@
 
 Summary:	Library used to extract meta-data from files
 Name:		libextractor
-Version:	1.19
+Version:	1.20
 Release:	1
-License:	BSD
+License:	GPLv3+
 Group:		System/Libraries
 Url:		https://www.gnu.org/software/libextractor/
 Source0:	https://ftp.gnu.org/pub/gnu/libextractor/%{name}-%{version}.tar.gz
@@ -22,12 +22,30 @@ BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 BuildRequires:	pkgconfig(exiv2)
 BuildRequires:	pkgconfig(flac)
+BuildRequires:	giflib-devel
 BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gstreamer-1.0)
+BuildRequires:	pkgconfig(gstreamer-app-1.0)
+BuildRequires:	pkgconfig(gstreamer-controller-1.0)
+BuildRequires:	pkgconfig(gstreamer-pbutils-1.0)
+BuildRequires:	pkgconfig(gstreamer-tag-1.0)
+BuildRequires:	pkgconfig(gstreamer-video-1.0)
 BuildRequires:	pkgconfig(gtk+-3.0)
+BuildRequires:	pkgconfig(libarchive)
+BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(libavformat)
+BuildRequires:	pkgconfig(libavutil)
 BuildRequires:	pkgconfig(libgsf-1)
+BuildRequires:	pkgconfig(libmagic)
 BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	pkgconfig(libssh)
+BuildRequires:	pkgconfig(libswresample)
+BuildRequires:	pkgconfig(libswscale)
+BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libvlc)
+BuildRequires:	pkgconfig(poppler-cpp)
 BuildRequires:	pkgconfig(rpm)
+BuildRequires:	pkgconfig(tidy)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(sltdl)
@@ -35,7 +53,6 @@ BuildSystem:	autotools
 BuildOption:	--disable-static
 BuildOption:	--disable-rpath
 BuildOption:	--enable-exiv2
-BuildOption:	--disable-ffmpeg
 BuildOption:	--with-plugindirname=%{name}%{major}
 
 %patchlist
@@ -103,8 +120,8 @@ Common function library of libextractor.
 %package -n	%{devname}
 Summary:	Libextractor library headers and development libraries
 Group:		Development/Other
-Requires:	%{libname} = %{version}-%{release}
-Requires:	%{libcommon} = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Requires:	%{libcommon} = %{EVRD}
 Obsoletes:	%{_lib}extractor-static-devel < 1.1
 
 %description -n	%{devname}
